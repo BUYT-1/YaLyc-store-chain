@@ -18,7 +18,7 @@ def fix_config_file():
     Create a config file if it doesn't exist and repair it if it is malformed.
     """
     if not os.path.isfile('configuration.cfg'):
-        with open('configuration.cfg', 'w'):
+        with open('configuration.cfg', 'x'):
             pass
 
     config = configparser.ConfigParser()
@@ -43,16 +43,24 @@ def check_password(password: str):
     return True
 
 
-def get_db_path():
+def get_db_path() -> Optional[str]:
     config = configparser.ConfigParser()
     config.read('configuration.cfg')
-    return config['Database']['path_to_db']
+    path = config['Database']['path_to_db']
+    if path is None:
+        return None
+    if not os.path.isfile(path):
+        return None
+    return path
 
 
 def quick_query(query: str) -> list:
     """Query the db once without maintaining a persistent connection."""
+    path = get_db_path()
+    if path is None:
+        return []
     try:
-        with sqlite3.connect(get_db_path()) as connection:
+        with sqlite3.connect(path) as connection:
             cursor = connection.cursor()
             return cursor.execute(query).fetchall()
     except sqlite3.Error:
@@ -61,7 +69,8 @@ def quick_query(query: str) -> list:
 
 def get_info(
         obj: Union[QLineEdit, QComboBox, QSpinBox],
-        index_mapping: Dict[QComboBox, Dict[int, Optional[int]]]) -> Optional[str]:
+        index_mapping: Dict[QComboBox, Dict[int, Optional[int]]]
+) -> Optional[str]:
     if isinstance(obj, (QLineEdit, QSpinBox)):
         return obj.text()
     if isinstance(obj, QComboBox):

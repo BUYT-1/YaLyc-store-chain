@@ -8,7 +8,7 @@ from PyQt5 import QtCore, QtGui, QtWidgets
 from .management_window import ManagementWindow
 from .shop_widget import ShopWidget
 from .info_manipulation_dialog import InfoManipulationDialog
-from .shared_constants import STOCK_TR_TYPE, SELL_TR_TYPE
+from .values import STOCK_TR_TYPE, SELL_TR_TYPE
 
 
 class Ui_ShopManagementWindow:

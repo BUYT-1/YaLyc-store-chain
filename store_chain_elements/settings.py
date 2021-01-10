@@ -5,7 +5,7 @@ from PyQt5.QtCore import pyqtSignal
 from PyQt5 import QtCore, QtWidgets
 
 from .functions import fix_config_file
-from .shared_constants import HOME_DIR
+from .values import HOME_DIR
 
 
 class Ui_Settings:
