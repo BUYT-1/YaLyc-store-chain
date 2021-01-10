@@ -200,11 +200,8 @@ class ShopManagementWindow(ManagementWindow, Ui_ShopManagementWindow):
             shop""").fetchall()
 
         # Clear the layout
-        for i in range(self.shopLayout.count() - 1, -1, -1):
-            to_remove = self.shopLayout.itemAt(i).widget()
-            self.shopLayout.removeWidget(to_remove)
-            if to_remove is not None:
-                to_remove.deleteLater()
+        for i in reversed(range(self.shopLayout.count() - 1)):
+            self.shopLayout.itemAt(i).widget().setParent(None)
 
         for shop_id, name in data:
             shop_widget = ShopWidget(shop_id)
